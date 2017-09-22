@@ -9,6 +9,7 @@ import net.ndrei.bushmaster.api.IHarvestable
 import net.ndrei.bushmaster.api.IHarvestableFactory
 import net.ndrei.bushmaster.integrations.NaturaBushFactory
 import net.ndrei.bushmaster.integrations.PlantsBushFactory
+import net.ndrei.bushmaster.integrations.RusticBushFactory
 
 object HarvestableFactory : IHarvestableFactory {
     private val factories: MutableMap<String, IHarvestableFactory> = mutableMapOf()
@@ -22,11 +23,16 @@ object HarvestableFactory : IHarvestableFactory {
     fun preInit() {
         this.factories.addModFactory("natura") { NaturaBushFactory() }
         this.factories.addModFactory("plants2") { PlantsBushFactory() }
+        this.factories.addModFactory("rustic") { RusticBushFactory() }
     }
 
     override fun getHarvestable(world: World, pos: BlockPos, state: IBlockState): IHarvestable? {
         if (state.block == Blocks.AIR) {
             return null
+        }
+
+        if (state.block is IHarvestable) {
+            return state.block as IHarvestable
         }
 
         val modIdFilter = state.block?.registryName?.resourceDomain

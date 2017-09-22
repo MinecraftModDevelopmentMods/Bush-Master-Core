@@ -16,14 +16,14 @@ import net.ndrei.teslacorelib.BushMasterCore
 
 class PlantsBushFactory : IHarvestableFactory {
     override fun getHarvestable(world: World, pos: BlockPos, state: IBlockState) =
-        if (PlantsBushWrapper.canHarvest(world, pos, state)) {
+        if (PlantsBushWrapper.canHarvest(state)) {
             PlantsBushWrapper()
         } else null
 
     // TODO: consider making this an object
     class PlantsBushWrapper: IHarvestable {
         override fun canBeHarvested(worldIn: World, pos: BlockPos, state: IBlockState) =
-            PlantsBushWrapper.canHarvest(worldIn, pos, state) && state.testBoolProperty("fruit")
+            PlantsBushWrapper.canHarvest(state) && state.testBoolProperty("fruit")
 
         override fun canFakeHarvest(worldIn: World, pos: BlockPos, state: IBlockState) = false
 
@@ -31,10 +31,9 @@ class PlantsBushFactory : IHarvestableFactory {
             val block = state.block
             if (doHarvest && (worldIn is WorldServer)) {
                 val fake = BushMasterCore.getFakePlayer(worldIn)
-                fake.inventory.clear()
                 block.onBlockActivated(worldIn, pos, state, fake, EnumHand.MAIN_HAND, EnumFacing.UP, .5f, .5f, .5f)
                 fake.loot(loot)
-                // pos.harvest(loot, worldIn, 1) // @shadows said it's fine :)
+                // pos.collect(loot, worldIn, 1) // @shadows said it's fine :)
             }
 //            else if (!doHarvest && (block is IShearable)) {
 //                val shears = ItemStack(Items.SHEARS)
@@ -50,7 +49,7 @@ class PlantsBushFactory : IHarvestableFactory {
         }
 
         companion object {
-            fun canHarvest(worldIn: World, pos: BlockPos, state: IBlockState) =
+            fun canHarvest(state: IBlockState) =
                 state.block.javaClass.couldBe("shadows.plants2.block.forgotten.BlockBushLeaves")
 //                state.block.javaClass.couldBe("shadows.plants2.block.BlockEnumHarvestBush")
         }

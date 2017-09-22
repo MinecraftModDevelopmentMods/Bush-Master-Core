@@ -29,7 +29,7 @@ object BushMasterCore {
         get() = net.minecraftforge.fml.common.FMLCommonHandler.instance().effectiveSide?.isClient ?: false
 
     private val gameProfile by lazy { GameProfile(UUID.fromString("5198ed9d-5108-46c6-a684-50bb29e011e6"), "_BushMaster_") }
-    fun getFakePlayer(world: WorldServer) = FakePlayerFactory.get(world, this.gameProfile)
+    fun getFakePlayer(world: WorldServer) = FakePlayerFactory.get(world, this.gameProfile).also { it.inventory.clear() }
 
     @Mod.EventHandler
     fun construct(event: FMLConstructionEvent) {

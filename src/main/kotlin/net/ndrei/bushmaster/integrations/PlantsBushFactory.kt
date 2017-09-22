@@ -7,23 +7,27 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
+import net.ndrei.bushmaster.BushMasterCore
 import net.ndrei.bushmaster.api.IHarvestable
 import net.ndrei.bushmaster.api.IHarvestableFactory
 import net.ndrei.bushmaster.couldBe
 import net.ndrei.bushmaster.loot
 import net.ndrei.bushmaster.testBoolProperty
-import net.ndrei.teslacorelib.BushMasterCore
 
 class PlantsBushFactory : IHarvestableFactory {
     override fun getHarvestable(world: World, pos: BlockPos, state: IBlockState) =
-        if (PlantsBushWrapper.canHarvest(state)) {
-            PlantsBushWrapper()
-        } else null
+        when {
+            PlantsBushWrapper.canHarvest(state) -> PlantsBushWrapper
+            else -> null
+        }
 
-    // TODO: consider making this an object
-    class PlantsBushWrapper: IHarvestable {
+    object PlantsBushWrapper: IHarvestable {
+        fun canHarvest(state: IBlockState) =
+            state.block.javaClass.couldBe("shadows.plants2.block.forgotten.BlockBushLeaves")
+//              state.block.javaClass.couldBe("shadows.plants2.block.BlockEnumHarvestBush")
+
         override fun canBeHarvested(worldIn: World, pos: BlockPos, state: IBlockState) =
-            PlantsBushWrapper.canHarvest(state) && state.testBoolProperty("fruit")
+            this.canHarvest(state) && state.testBoolProperty("fruit")
 
         override fun canFakeHarvest(worldIn: World, pos: BlockPos, state: IBlockState) = false
 
@@ -46,12 +50,6 @@ class PlantsBushFactory : IHarvestableFactory {
 //                    })
 //                }
 //            }
-        }
-
-        companion object {
-            fun canHarvest(state: IBlockState) =
-                state.block.javaClass.couldBe("shadows.plants2.block.forgotten.BlockBushLeaves")
-//                state.block.javaClass.couldBe("shadows.plants2.block.BlockEnumHarvestBush")
         }
     }
 }

@@ -5,23 +5,26 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
+import net.ndrei.bushmaster.BushMasterCore
 import net.ndrei.bushmaster.api.IHarvestable
 import net.ndrei.bushmaster.api.IHarvestableFactory
 import net.ndrei.bushmaster.collect
 import net.ndrei.bushmaster.couldBe
 import net.ndrei.bushmaster.isIntPropertyMax
-import net.ndrei.teslacorelib.BushMasterCore
 
 class NaturaBushFactory : IHarvestableFactory {
     override fun getHarvestable(world: World, pos: BlockPos, state: IBlockState) =
-        if (NaturaBushWrapper.canHarvest(state)) {
-            NaturaBushWrapper()
-        } else null
+        when {
+            NaturaBushWrapper.canHarvest(state) -> NaturaBushWrapper
+            else -> null
+        }
 
-    // TODO: consider making this an object
-    class NaturaBushWrapper: IHarvestable {
+    object NaturaBushWrapper: IHarvestable {
+        fun canHarvest(state: IBlockState) =
+            state.block.javaClass.couldBe("com.progwml6.natura.common.block.BlockEnumBerryBush")
+
         override fun canBeHarvested(worldIn: World, pos: BlockPos, state: IBlockState) =
-            NaturaBushWrapper.canHarvest(state) && state.isIntPropertyMax("age")
+            this.canHarvest(state) && state.isIntPropertyMax("age")
 
         override fun canFakeHarvest(worldIn: World, pos: BlockPos, state: IBlockState) = false
 
@@ -32,11 +35,6 @@ class NaturaBushFactory : IHarvestableFactory {
                 state.block.onBlockClicked(worldIn, pos, fake)
                 pos.collect(loot, worldIn)
             }
-        }
-
-        companion object {
-            fun canHarvest(state: IBlockState) =
-                state.block.javaClass.couldBe("com.progwml6.natura.common.block.BlockEnumBerryBush")
         }
     }
 }

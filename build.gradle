@@ -114,8 +114,8 @@ processResources {
 }
 
 jar {
-    from sourceSets.main.output
     from sourceSets.api.output
+    from sourceSets.main.output
 }
 
 task sourcesJar(type: Jar) {
@@ -125,6 +125,7 @@ task sourcesJar(type: Jar) {
 }
 
 task deobfJar(type: Jar) {
+    from sourceSets.api.output
     from sourceSets.main.output
     classifier = 'deobf'
 }

@@ -10,7 +10,6 @@ import net.minecraft.world.WorldServer
 import net.ndrei.bushmaster.*
 import net.ndrei.bushmaster.api.IHarvestable
 import net.ndrei.bushmaster.api.IHarvestableFactory
-import net.ndrei.teslacorelib.BushMasterCore
 
 class RusticBushFactory : IHarvestableFactory {
     override fun getHarvestable(world: World, pos: BlockPos, state: IBlockState): IHarvestable? =

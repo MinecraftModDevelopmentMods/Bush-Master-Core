@@ -1,4 +1,4 @@
-package net.ndrei.teslacorelib
+package net.ndrei.bushmaster
 
 import com.mojang.authlib.GameProfile
 import net.minecraft.world.WorldServer
@@ -6,7 +6,6 @@ import net.minecraftforge.common.util.FakePlayerFactory
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.*
-import net.ndrei.bushmaster.*
 import net.ndrei.bushmaster.api.BushMasterApi
 import net.ndrei.bushmaster.cmd.HarvestableCommand
 import org.apache.logging.log4j.Logger
@@ -29,7 +28,7 @@ object BushMasterCore {
         get() = net.minecraftforge.fml.common.FMLCommonHandler.instance().effectiveSide?.isClient ?: false
 
     private val gameProfile by lazy { GameProfile(UUID.fromString("5198ed9d-5108-46c6-a684-50bb29e011e6"), "_BushMaster_") }
-    fun getFakePlayer(world: WorldServer) = FakePlayerFactory.get(world, this.gameProfile).also { it.inventory.clear() }
+    fun getFakePlayer(world: WorldServer) = FakePlayerFactory.get(world, gameProfile).also { it.inventory.clear() }
 
     @Mod.EventHandler
     fun construct(event: FMLConstructionEvent) {
@@ -38,18 +37,18 @@ object BushMasterCore {
 
     @Mod.EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
-        this.logger = event.modLog
-        this.proxy.preInit(event)
+        logger = event.modLog
+        proxy.preInit(event)
     }
 
     @Mod.EventHandler
     fun init(event: FMLInitializationEvent) {
-        this.proxy.init(event)
+        proxy.init(event)
     }
 
     @Mod.EventHandler
     fun postInit(event: FMLPostInitializationEvent) {
-        this.proxy.postInit(event)
+        proxy.postInit(event)
     }
 
     @Mod.EventHandler

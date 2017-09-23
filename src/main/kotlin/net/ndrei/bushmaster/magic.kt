@@ -1,5 +1,6 @@
 package net.ndrei.bushmaster
 
+import net.minecraft.block.properties.IProperty
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.properties.PropertyEnum
 import net.minecraft.block.properties.PropertyInteger
@@ -48,6 +49,17 @@ fun<TE> IBlockState.getEnumProperty(propertyName: String): TE?
 
     return this.getValue(property)
 }
+
+fun IBlockState.getPropertyAsString(propertyName: String): String? {
+    val property = this.propertyKeys
+        .filterIsInstance<IProperty<*>>()
+        .firstOrNull { it.getName() == propertyName } ?: return null
+
+    return this.properties[property]?.toString()
+}
+
+fun IBlockState.testPropertyAsString(propertyName: String, value: String) =
+    this.getPropertyAsString(propertyName) == value
 
 fun BlockPos.collect(loot: MutableList<ItemStack>, world: World, radius: Int = 1) {
     val aabb = AxisAlignedBB(this.west(radius).north(radius).down(radius), this.east(radius).south(radius).up(radius))

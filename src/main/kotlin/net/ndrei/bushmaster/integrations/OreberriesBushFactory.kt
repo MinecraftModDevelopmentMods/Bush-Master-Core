@@ -9,8 +9,8 @@ import net.ndrei.bushmaster.BushMasterCore
 import net.ndrei.bushmaster.api.IHarvestable
 import net.ndrei.bushmaster.api.IHarvestableFactory
 import net.ndrei.bushmaster.couldBe
-import net.ndrei.bushmaster.loot
 import net.ndrei.bushmaster.isIntPropertyMax
+import net.ndrei.bushmaster.loot
 
 class OreberriesBushFactory : IHarvestableFactory {
     override fun getHarvestable(world: World, pos: BlockPos, state: IBlockState) =
@@ -26,10 +26,8 @@ class OreberriesBushFactory : IHarvestableFactory {
         override fun canBeHarvested(worldIn: World, pos: BlockPos, state: IBlockState) =
             this.canHarvest(state) && state.isIntPropertyMax("age")
 
-        override fun canFakeHarvest(worldIn: World, pos: BlockPos, state: IBlockState) = false
-
-        override fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, doHarvest: Boolean) {
-            if (doHarvest && (worldIn is WorldServer)) {
+        override fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, simulate: Boolean) {
+            if (!simulate && (worldIn is WorldServer)) {
                 val fake = BushMasterCore.getFakePlayer(worldIn)
                 fake.setPosition(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
                 state.block.onBlockClicked(worldIn, pos, fake)

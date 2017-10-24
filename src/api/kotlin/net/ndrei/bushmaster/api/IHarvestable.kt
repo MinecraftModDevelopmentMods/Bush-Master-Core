@@ -18,16 +18,16 @@ interface IHarvestable {
      * Specifies if the target block can provide the list of dropped items without actually dropping them.
      * This will usually be 'true' if implemented in a mod, and 'false' if it comes from a wrapper.
      */
-    fun canFakeHarvest(worldIn: World, pos: BlockPos, state: IBlockState) = true
+    fun canSimulateHarvest(worldIn: World, pos: BlockPos, state: IBlockState) = false
 
     /**
-     * Harvests the block into [loot]. If [canFakeHarvest] is 'false' then it should do nothing if [doHarvest] is false.
+     * Harvests the block into [loot]. If [canSimulateHarvest] is 'false' then it should do nothing if [simulate] is true.
      */
-    fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, doHarvest: Boolean)
+    fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, simulate: Boolean)
 
     /**
-     * Harvests the block. If [canFakeHarvest] is 'false' then it should do nothing if [doHarvest] is false.
+     * Harvests the block. If [canSimulateHarvest] is 'false' then it should do nothing if [simulate] is true.
      */
-    fun harvest(worldIn: World, pos: BlockPos, state: IBlockState, doHarvest: Boolean) =
-        mutableListOf<ItemStack>().also { this.harvest(it, worldIn, pos, state, doHarvest) }.toList()
+    fun harvest(worldIn: World, pos: BlockPos, state: IBlockState, simulate: Boolean) =
+        mutableListOf<ItemStack>().also { this.harvest(it, worldIn, pos, state, simulate) }.toList()
 }

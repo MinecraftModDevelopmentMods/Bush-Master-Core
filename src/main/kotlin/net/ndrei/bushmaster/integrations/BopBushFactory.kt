@@ -29,10 +29,8 @@ class BopBushFactory : IHarvestableFactory {
         override fun canBeHarvested(worldIn: World, pos: BlockPos, state: IBlockState) =
             this.isBerryBush(state) && state.testPropertyAsString("variant", "berrybush")
 
-        override fun canFakeHarvest(worldIn: World, pos: BlockPos, state: IBlockState) = false
-
-        override fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, doHarvest: Boolean) {
-            if (doHarvest && (worldIn is WorldServer)) {
+        override fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, simulate: Boolean) {
+            if (!simulate && (worldIn is WorldServer)) {
                 val fake = BushMasterCore.getFakePlayer(worldIn)
                 fake.setPosition(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
                 state.block.onBlockActivated(worldIn, pos, state, fake, EnumHand.MAIN_HAND, EnumFacing.UP, .5f, .5f, .5f)

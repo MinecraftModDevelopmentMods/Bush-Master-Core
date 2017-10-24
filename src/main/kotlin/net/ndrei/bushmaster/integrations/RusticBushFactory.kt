@@ -27,11 +27,9 @@ class RusticBushFactory : IHarvestableFactory {
         override fun canBeHarvested(worldIn: World, pos: BlockPos, state: IBlockState) =
             RusticBushWrapper.isBush(state) && state.testBoolProperty("berries")
 
-        override fun canFakeHarvest(worldIn: World, pos: BlockPos, state: IBlockState) = false
-
-        override fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, doHarvest: Boolean) {
+        override fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, simulate: Boolean) {
             val block = state.block
-            if (doHarvest && (worldIn is WorldServer)) {
+            if (!simulate && (worldIn is WorldServer)) {
                 val fake = BushMasterCore.getFakePlayer(worldIn)
                 block.onBlockActivated(worldIn, pos, state, fake, EnumHand.MAIN_HAND, EnumFacing.UP, .5f, .5f, .5f)
                 pos.up().collect(loot, worldIn)
@@ -56,11 +54,9 @@ class RusticBushFactory : IHarvestableFactory {
                     return false
                 })
 
-        override fun canFakeHarvest(worldIn: World, pos: BlockPos, state: IBlockState) = false
-
-        override fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, doHarvest: Boolean) {
+        override fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, simulate: Boolean) {
             val block = state.block
-            if (doHarvest && (worldIn is WorldServer)) {
+            if (!simulate && (worldIn is WorldServer)) {
                 val fake = BushMasterCore.getFakePlayer(worldIn)
                 var currentPos = pos
                 var currentState = state
@@ -109,10 +105,8 @@ class RusticBushFactory : IHarvestableFactory {
             return result
         }
 
-        override fun canFakeHarvest(worldIn: World, pos: BlockPos, state: IBlockState) = false
-
-        override fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, doHarvest: Boolean) {
-            if (doHarvest && (worldIn is WorldServer) && this.isGrapeCrop(state)) {
+        override fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, simulate: Boolean) {
+            if (!simulate && (worldIn is WorldServer) && this.isGrapeCrop(state)) {
                 val fake = BushMasterCore.getFakePlayer(worldIn)
                 this.process(worldIn, pos, { s, p ->
                     s.block.onBlockActivated(worldIn, p, s, fake, EnumHand.MAIN_HAND, EnumFacing.UP, .5f, .5f, .5f)

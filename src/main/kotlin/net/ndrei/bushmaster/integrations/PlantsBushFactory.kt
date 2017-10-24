@@ -29,17 +29,15 @@ class PlantsBushFactory : IHarvestableFactory {
         override fun canBeHarvested(worldIn: World, pos: BlockPos, state: IBlockState) =
             this.canHarvest(state) && state.testBoolProperty("fruit")
 
-        override fun canFakeHarvest(worldIn: World, pos: BlockPos, state: IBlockState) = false
-
-        override fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, doHarvest: Boolean) {
+        override fun harvest(loot: MutableList<ItemStack>, worldIn: World, pos: BlockPos, state: IBlockState, simulate: Boolean) {
             val block = state.block
-            if (doHarvest && (worldIn is WorldServer)) {
+            if (!simulate && (worldIn is WorldServer)) {
                 val fake = BushMasterCore.getFakePlayer(worldIn)
                 block.onBlockActivated(worldIn, pos, state, fake, EnumHand.MAIN_HAND, EnumFacing.UP, .5f, .5f, .5f)
                 fake.loot(loot)
                 // pos.collect(loot, worldIn, 1) // @shadows said it's fine :)
             }
-//            else if (!doHarvest && (block is IShearable)) {
+//            else if (!simulate && (block is IShearable)) {
 //                val shears = ItemStack(Items.SHEARS)
 //                if (block.isShearable(shears, worldIn, pos)) {
 //                    loot.addAll(block.onSheared(shears, worldIn, pos, 1))

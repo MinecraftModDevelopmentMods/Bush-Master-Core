@@ -10,6 +10,7 @@ import net.ndrei.bushmaster.api.IHarvestableFactory
 import net.ndrei.bushmaster.integrations.BopBushFactory
 import net.ndrei.bushmaster.integrations.NaturaBushFactory
 import net.ndrei.bushmaster.integrations.PlantsBushFactory
+import net.ndrei.bushmaster.integrations.OreberriesBushFactory
 import net.ndrei.bushmaster.integrations.RusticBushFactory
 
 object HarvestableFactory : IHarvestableFactory {
@@ -26,6 +27,7 @@ object HarvestableFactory : IHarvestableFactory {
         this.factories.addModFactory("plants2") { PlantsBushFactory() }
         this.factories.addModFactory("rustic") { RusticBushFactory() }
         this.factories.addModFactory("biomesoplenty") { BopBushFactory() }
+        this.factories.addModFactory("oreberries") { OreberriesBushFactory() }
     }
 
     override fun getHarvestable(world: World, pos: BlockPos, state: IBlockState): IHarvestable? {

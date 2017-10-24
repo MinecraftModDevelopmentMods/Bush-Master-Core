@@ -3,6 +3,7 @@
 #future
 
 #1.0.1
+- Oreberries integration
 
 #1.0.0
 - initial version

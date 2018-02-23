@@ -200,7 +200,11 @@ publishing {
         mavenJava(MavenPublication) {
             groupId project.group
             artifactId project.archivesBaseName
-            version project.version
+            def versionForMaven = "$project.minecraft_version-$project.mod_version"
+            if (System.getenv().BUILD_NUMBER) {
+                versionForMaven += '.' + System.getenv().BUILD_NUMBER
+            }
+            version versionForMaven
             from components.java
             artifact sourceJar {
                 classifier 'sources'

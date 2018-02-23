@@ -3,6 +3,8 @@
 #future
 
 #1.0.2
+- moved to MMD servers
+- jar should now be signed
 
 #1.0.1
 - Oreberries integration

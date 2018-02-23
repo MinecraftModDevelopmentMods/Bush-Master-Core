@@ -11,3 +11,22 @@ Master of all minecraft bushes!
 - Plants 2
 - Rustic
 - Oreberries
+
+#### If one wants to use this lib in one's mod
+One must first add the maven repository to the list:
+```gradle
+repositories {
+    maven { name='MMD'; url='https://maven.mcmoddev.com' }
+}
+``` 
+And then one must add the dependency:
+```gradle
+dependencies {
+    compile("net.ndrei:bush-master-core:${project.bmc_version}+:deobf")
+}
+```
+And I would also recommend having this in your `gradle.properties`:
+```gradle
+bmc_version = 1.0.0
+```
+for easier update later on.

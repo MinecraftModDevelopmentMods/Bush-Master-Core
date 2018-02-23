@@ -215,6 +215,9 @@ publishing {
             artifact javadocJar {
                 classifier 'javadoc'
             }
+            artifact apiJar {
+                classifier 'api'
+            }
         }
     }
     repositories {
@@ -233,7 +236,7 @@ curseforge {
         println("CURSE FORGE RELEASE :: $project.cf_release_type")
 //        apiKey = secret.curseforgeAPIKey
 //        project {
-//            id = '280412'
+//            id = "$project.cf_project_id"
 //            changelog = file('current-changelog.txt')
 //            releaseType = project.cf_release_type
 //            addGameVersion(project.minecraft_version)

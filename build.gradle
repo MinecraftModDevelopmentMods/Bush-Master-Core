@@ -11,6 +11,7 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${project.kotlin_version}"
         classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.0.10'
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.16"
     }
 }
 apply plugin: "net.minecraftforge.gradle.forge"
@@ -18,6 +19,7 @@ apply plugin: 'com.matthewprenger.cursegradle'
 apply plugin: 'kotlin'
 apply plugin: "maven-publish"
 apply plugin: "maven"
+apply plugin: 'org.jetbrains.dokka'
 
 archivesBaseName = project.mod_name.replace(' ', '-').toLowerCase()
 group = "net.ndrei"
@@ -56,10 +58,6 @@ minecraft {
     replace '@FINGERPRINT@', project.findProperty('signSHA1')
 
     replaceIn 'constants.kt'
-}
-
-javadoc {
-    failOnError = false
 }
 
 class Secrets {
@@ -167,6 +165,14 @@ task apiJar(type: Jar) {
     classifier = 'api'
 }
 
+task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    outputFormat = "javadoc"
+    kotlinTasks {
+        [':compileApiKotlin']
+    }
+    outputDirectory = "$buildDir/dokkaJavadoc"
+}
+
 task signJar(type: SignJar, dependsOn: reobfJar) {
     // Skips if the keyStore property is missing.
     onlyIf {
@@ -186,9 +192,9 @@ task signJar(type: SignJar, dependsOn: reobfJar) {
 
 build.dependsOn signJar
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
+task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
     classifier = 'javadoc'
-    from javadoc.getDestinationDir()
+    from dokkaJavadoc.outputDirectory
 }
 
 artifacts {
@@ -233,34 +239,37 @@ publishing {
 
 curseforge {
     if (project.hasProperty('cf_release_type') && (project.cf_release_type != "none")) {
-        println("CURSE FORGE RELEASE :: $project.cf_release_type")
-//        apiKey = secret.curseforgeAPIKey
-//        project {
-//            id = "$project.cf_project_id"
-//            changelog = file('current-changelog.txt')
-//            releaseType = project.cf_release_type
-//            addGameVersion(project.minecraft_version)
-//            def projectName = project.mod_name
-//            def displayVersion = project.mod_version
-//            if (System.getenv().BUILD_NUMBER) {
-//                displayVersion += '.' + System.getenv().BUILD_NUMBER
-//            }
-//            mainArtifact(jar) {
-//                displayName = "$project.mod_name : $displayVersion"
-//                relations {
-//                    requiredLibrary 'shadowfacts-forgelin'
-//                    optionalLibrary 'powered-thingies'
-//                }
-//            }
-//            addArtifact(sourceJar) {
-//                displayName = "$project.description $displayVersion Sources"
-//            }
-//            addArtifact(deobfJar) {
-//                displayName = "$project.description $displayVersion Development"
-//            }
-//            addArtifact(javadocJar) {
-//                displayName = "$project.description $displayVersion Javadoc"
-//            }
-//        }
+        //println("CURSE FORGE RELEASE :: $project.cf_release_type")
+        apiKey = secret.curseforgeAPIKey
+        project {
+            id = "$project.cf_project_id"
+            changelog = file('current-changelog.txt')
+            releaseType = project.cf_release_type
+            addGameVersion(project.minecraft_version)
+            def projectName = project.mod_name
+            def displayVersion = project.mod_version
+            if (System.getenv().BUILD_NUMBER) {
+                displayVersion += '.' + System.getenv().BUILD_NUMBER
+            }
+            mainArtifact(jar) {
+                displayName = "$project.mod_name : $displayVersion"
+                relations {
+                    requiredLibrary 'shadowfacts-forgelin'
+                    optionalLibrary 'powered-thingies'
+                }
+            }
+            addArtifact(sourceJar) {
+                displayName = "$project.mod_name : $displayVersion : Sources"
+            }
+            addArtifact(deobfJar) {
+                displayName = "$project.mod_name : $displayVersion : Development"
+            }
+            addArtifact(apiJar) {
+                displayName = "$project.mod_name : $displayVersion : API"
+            }
+            addArtifact(javadocJar) {
+                displayName = "$project.mod_name : $displayVersion : API Javadoc"
+            }
+        }
     }
 }

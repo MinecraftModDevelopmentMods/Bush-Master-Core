@@ -15,9 +15,10 @@ import java.util.*
  * Created by CF on 2017-06-28.
  */
 @Mod(modid = MOD_ID, version = MOD_VERSION, name = MOD_NAME,
-        acceptedMinecraftVersions = MOD_MC_VERSION,
-        dependencies = MOD_DEPENDENCIES,
-        useMetadata = true, modLanguage = "kotlin", modLanguageAdapter = "net.shadowfacts.forgelin.KotlinAdapter")
+    acceptedMinecraftVersions = MOD_MC_VERSION,
+    dependencies = MOD_DEPENDENCIES,
+    certificateFingerprint = MOD_SIGN_FINGERPRINT,
+    useMetadata = true, modLanguage = "kotlin", modLanguageAdapter = "net.shadowfacts.forgelin.KotlinAdapter")
 object BushMasterCore {
     @SidedProxy(clientSide = "net.ndrei.bushmaster.ClientProxy", serverSide = "net.ndrei.bushmaster.ServerProxy")
     lateinit var proxy: CommonProxy

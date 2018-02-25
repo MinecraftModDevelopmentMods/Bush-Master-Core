@@ -2,6 +2,8 @@
 
 #future
 
+#1.0.3
+
 #1.0.2
 - moved to MMD servers
 - jar should now be signed

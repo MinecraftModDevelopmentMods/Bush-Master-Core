@@ -11,6 +11,8 @@ Master of all minecraft bushes!
 - Plants 2
 - Rustic
 - Oreberries
+- Ore Shrubs
+- Extra Utilities 2
 
 #### If one wants to use this lib in one's mod
 One must first add the maven repository to the list:

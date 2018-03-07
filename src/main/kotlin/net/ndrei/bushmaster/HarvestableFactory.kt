@@ -25,6 +25,7 @@ object HarvestableFactory : IHarvestableFactory {
         this.factories.addModFactory("biomesoplenty") { BopBushFactory() }
         this.factories.addModFactory("oreberries") { OreBerriesBushFactory() }
         this.factories.addModFactory("oreshrubs", { OreShrubsBushFactory() })
+        this.factories.addModFactory("extrautils2", { ExtraUtils2BushFactory() })
     }
 
     override fun getHarvestable(world: World, pos: BlockPos, state: IBlockState): IHarvestable? {

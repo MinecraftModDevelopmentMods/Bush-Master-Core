@@ -12,7 +12,7 @@ import net.ndrei.bushmaster.couldBe
 import net.ndrei.bushmaster.isIntPropertyMax
 import net.ndrei.bushmaster.loot
 
-class OreberriesBushFactory : IHarvestableFactory {
+class OreBerriesBushFactory : IHarvestableFactory {
     override fun getHarvestable(world: World, pos: BlockPos, state: IBlockState) =
         when {
             OreberriesBushWrapper.canHarvest(state) -> OreberriesBushWrapper

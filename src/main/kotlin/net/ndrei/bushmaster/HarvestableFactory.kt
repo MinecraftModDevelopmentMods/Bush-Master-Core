@@ -7,11 +7,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.common.Loader
 import net.ndrei.bushmaster.api.IHarvestable
 import net.ndrei.bushmaster.api.IHarvestableFactory
-import net.ndrei.bushmaster.integrations.BopBushFactory
-import net.ndrei.bushmaster.integrations.NaturaBushFactory
-import net.ndrei.bushmaster.integrations.PlantsBushFactory
-import net.ndrei.bushmaster.integrations.OreberriesBushFactory
-import net.ndrei.bushmaster.integrations.RusticBushFactory
+import net.ndrei.bushmaster.integrations.*
 
 object HarvestableFactory : IHarvestableFactory {
     private val factories: MutableMap<String, IHarvestableFactory> = mutableMapOf()
@@ -27,7 +23,8 @@ object HarvestableFactory : IHarvestableFactory {
         this.factories.addModFactory("plants2") { PlantsBushFactory() }
         this.factories.addModFactory("rustic") { RusticBushFactory() }
         this.factories.addModFactory("biomesoplenty") { BopBushFactory() }
-        this.factories.addModFactory("oreberries") { OreberriesBushFactory() }
+        this.factories.addModFactory("oreberries") { OreBerriesBushFactory() }
+        this.factories.addModFactory("oreshrubs", { OreShrubsBushFactory() })
     }
 
     override fun getHarvestable(world: World, pos: BlockPos, state: IBlockState): IHarvestable? {

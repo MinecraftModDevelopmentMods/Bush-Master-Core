@@ -2,6 +2,8 @@
 
 #future
 
+#1.0.4
+
 #1.0.3
 - ore shrubs integration (https://minecraft.curseforge.com/projects/ore-shrubs)
 - extra utilities 2 integration (ender lilly and red orchid)

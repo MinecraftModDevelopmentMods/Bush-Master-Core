@@ -37,7 +37,7 @@ object HarvestableFactory : IHarvestableFactory {
             return state.block as IHarvestable
         }
 
-        val modIdFilter = state.block?.registryName?.resourceDomain
+        val modIdFilter = state.block?.registryName?.namespace
         for ((key, factory) in this.factories) {
             if (modIdFilter.isNullOrBlank() || (key == modIdFilter)) {
                 val harvestable = factory.getHarvestable(world, pos, state)
